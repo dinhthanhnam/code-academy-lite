@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
         return NextResponse.next();
     }
 
-    const laravelResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/check`, {
+    const laravelResponse = await fetch(`http://proxy/auth/check`, {
         headers: {
             Cookie: `codeacademy_session=${sessionCookie.value}; XSRF-TOKEN=${xsrfToken.value}`,
             "X-XSRF-HEADER": xsrfToken.value,
