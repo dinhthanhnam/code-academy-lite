@@ -55,9 +55,58 @@ services:
       - "3001:3000"
     networks:
       - app_network
+  judge0-db:
+    image: postgres:13
+    container_name: code-academy-judge0-db
+    environment:
+      POSTGRES_USER: judge0
+      POSTGRES_PASSWORD: judge0
+      POSTGRES_DB: judge0
+    volumes:
+      - judge0_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  redis:
+    image: redis:7
+    container_name: code-academy-redis
+    expose:
+      - 6379
+    networks:
+      - app_network
+
+  judge0:
+    container_name: code-academy-judge0
+    image: judge0/judge0:1.13.1
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - judge0_box:/box
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - DISABLE_SANDBOX=true
+      - PORT=2358
+      - DATABASE_URL=postgresql://judge0:judge0@judge0-db:5432/judge0
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MAX_PROCESSES=4
+      - MAX_MEMORY=512
+      - MAX_QUEUE_SIZE=100
+      - DISABLE_SECURITY=false
+      - ALLOWED_ORIGINS=*
+    expose:
+      - 2358
+    depends_on:
+      - judge0-db
+      - redis
+    networks:
+      - app_network
 
 volumes:
   db_data:
+  judge0_data:
+  judge0_box:
 
 networks:
   app_network:

@@ -4,18 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseExercise;
 use App\Models\Exercise;
+use App\Models\Language;
 use App\Models\Submission;
-use HttpException;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class JudgeController extends Controller
 {
-    /**
-     * @throws ConnectionException
-     * @throws HttpException
-     */
     public function submit(Request $request)
     {
         $request->validate([
@@ -23,37 +19,40 @@ class JudgeController extends Controller
             'course_class_id' => 'required|integer',
             'exercise_id' => 'required|integer',
             'mode' => 'required|string|in:compile,submit',
+            'language'=> 'required',
         ]);
 
         $courseClassId = $request->input('course_class_id');
         $exerciseId = $request->input('exercise_id');
         $sourceCode = $request->input('code');
         $mode = $request->input('mode');
-
+        $language = $request->input('language');
         // Validate course exercise and related data
         $courseExercise = CourseExercise::where('course_class_id', $courseClassId)
             ->where('exercise_id', $exerciseId)
             ->first();
 
-//        if (!$courseExercise) {
-//            return response()->json(['success' => false, 'message' => 'Không tìm thấy bài tập'], 404);
-//        }
+       if (!$courseExercise) {
+           return response()->json(['success' => false, 'message' => 'Không tìm thấy bài tập'], 404);
+       }
 
         if ($mode === 'submit' && !$courseExercise->is_active) {
             return response()->json(['success' => false, 'message' => 'Bài tập đã đóng'], 403);
         }
 
         $exercise = Exercise::find($exerciseId);
+        \Log::info('Exercise test case: '. $exercise->test_cases);
         if (!$exercise) {
             return response()->json(['success' => false, 'message' => 'Không tìm thấy bài tập'], 404);
         }
 
-        $language = $exercise->language()->first();
-//        if (!$language) {
-//            return response()->json(['success' => false, 'message' => 'Ngôn ngữ không hợp lệ'], 400);
-//        }
+        $language = Language::where('name', $language)->first();
 
-        $testCases = $exercise->test_cases;
+       if (!$language) {
+           return response()->json(['success' => false, 'message' => 'Ngôn ngữ không hợp lệ'], 400);
+       }
+
+        $testCases = json_decode($exercise->test_cases, true);
         if (empty($testCases)) {
             return response()->json(['success' => false, 'message' => 'Không có test case'], 400);
         }
@@ -63,8 +62,8 @@ class JudgeController extends Controller
         foreach ($testCases as $test) {
             $submissionData = [
                 'source_code'    => $sourceCode,
-                'language_id'    => $language ? $language->judge_language_id : 2,
-//                'language_id'    => 2,
+                'language_id'    => $language ? $language->judge_language_id : 54,
+                // 'language_id'    => 71,
                 'stdin'          => $test['stdin'],
                 'expected_output'=> $test['expected_output'],
                 'cpu_time_limit' => $exercise->time_limit,
@@ -77,7 +76,7 @@ class JudgeController extends Controller
                 \Log::error('Judge0 submission failed:', [$response->body()]);
                 throw new HttpException(502, 'Không thể kết nối tới Judge0');
             }
-
+            \Log::info('Judge0 raw response:', [$response->json()]);
             $judgedResults[] = $response->json();
         }
 
@@ -131,7 +130,7 @@ class JudgeController extends Controller
         } else {
             $message = 'Biên dịch thành công, ' . $message;
         }
-
+        \Log::info("results: ", $results);
         return response()->json([
             'success' => true,
             'message' => $message,
