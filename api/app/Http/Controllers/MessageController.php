@@ -6,6 +6,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
@@ -44,10 +45,19 @@ class MessageController extends Controller
             'conversation_id' => $conversationId,
             'content' => $validated['content'],
         ]);
-
+        
         $message->load('user');
         // Phát Event
-        // event(new MessageSent($message));
+        Log::info('Before event');
+        try {
+            event(new MessageSent($message));
+            Log::info('After event');
+        } catch (\Throwable $e) {
+            Log::error('Broadcast failed', [
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
 
         return response()->json([
             'success' => true,
