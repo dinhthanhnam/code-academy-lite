@@ -26,6 +26,7 @@ services:
       - db
     expose:
       - 9000
+      - 8080
     networks:
       - app_network
 

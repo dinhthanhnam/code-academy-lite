@@ -47,7 +47,7 @@ class MessageController extends Controller
 
         $message->load('user');
         // Phát Event
-        event(new MessageSent($message));
+        // event(new MessageSent($message));
 
         return response()->json([
             'success' => true,

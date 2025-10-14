@@ -99,8 +99,5 @@ export const sendMessage = async (conversationId: string, content: string): Prom
     const res = await api.post<SendMessageResponse>(`/api/conversations/${conversationId}/messages`, {
         content,
     });
-    if (res.data.success) {
-        return res.data.data;
-    }
-    throw new Error(res.data.message || "Failed to send message");
+    return res.data.data;
 };

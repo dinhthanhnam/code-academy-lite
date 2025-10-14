@@ -28,10 +28,10 @@ const initEcho = (): Echo<any> | null => {
         wsPort: process.env.NEXT_PUBLIC_REVERB_PORT,
         wssPort: process.env.NEXT_PUBLIC_REVERB_PORT,
         scheme: process.env.NEXT_PUBLIC_REVERB_SCHEME,
-        enabledTransports: ['ws', 'wss'],
-        forceTLS: process.env.NEXT_PUBLIC_REVERB_SCHEME == 'https',
+        enabledTransports: ['ws'],
+        forceTLS: process.env.NEXT_PUBLIC_REVERB_SCHEME === 'https',
         disableStats: true,
-        path: '',
+        path: '/app',
         authEndpoint: `${process.env.NEXT_PUBLIC_API_URL}/broadcasting/auth`,
         authorizer: (channel, options) => {
             return {
