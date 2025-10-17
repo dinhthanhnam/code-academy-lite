@@ -22,10 +22,7 @@ export default function Header() {
       {/* ProfileHolder, JoinClass, và Chatbox */}
       <div className="flex items-center space-x-4">
         <JoinClass />
-        <Notifications />
         <ProfileHolder />
-       
-        
       </div>
     </div>
   );

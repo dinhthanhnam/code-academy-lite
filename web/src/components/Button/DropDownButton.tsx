@@ -66,10 +66,7 @@ export default function DropDownButton({
         // Không đóng dropdown, giữ nó mở
     };
 
-    // Số lượng option tối đa hiển thị trước khi ấn "Xem thêm"
-    const maxVisibleOptions = 4;
     const combinedOptions = [...defaultOptions, ...options];
-    const visibleOptions = showAll ? combinedOptions : combinedOptions.slice(0, maxVisibleOptions);
 
     return (
         <div
@@ -96,7 +93,7 @@ export default function DropDownButton({
             {/* Danh sách các options bên trong dropdown */}
             <div
                 className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${isActive ? "max-h-50" : "max-h-0"}`}>
-                {visibleOptions.map((option) => (
+                {combinedOptions.map((option) => (
                     <div
                         key={option.id}
                         className={`select-none px-6 py-1 rounded-md duration-200 text-sm text-gray-800 transition-all
@@ -111,17 +108,17 @@ export default function DropDownButton({
                 ))}
 
                 {/* Nút "Xem thêm" */}
-                {combinedOptions.length > maxVisibleOptions && (
-                    <div
-                        className="select-none px-6 py-1 rounded-md duration-200 text-sm text-blue-700 cursor-pointer hover:bg-gray-200"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setShowAll(!showAll);
-                        }}
-                    >
-                        {showAll ? "Thu gọn" : "Xem thêm..."}
-                    </div>
-                )}
+                {/*{combinedOptions.length > maxVisibleOptions && (*/}
+                {/*    <div*/}
+                {/*        className="select-none px-6 py-1 rounded-md duration-200 text-sm text-blue-700 cursor-pointer hover:bg-gray-200"*/}
+                {/*        onClick={(e) => {*/}
+                {/*            e.stopPropagation();*/}
+                {/*            setShowAll(!showAll);*/}
+                {/*        }}*/}
+                {/*    >*/}
+                {/*        {showAll ? "Thu gọn" : "Xem thêm..."}*/}
+                {/*    </div>*/}
+                {/*)}*/}
             </div>
         </div>
     );

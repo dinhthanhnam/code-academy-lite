@@ -48,6 +48,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/personal_role', [AuthController::class, 'personal_role']);
     Route::get('/personal_info', [AuthController::class, 'personal_info']);
     Route::get('/personal_course_classes', [StudentController::class, 'personal_course_classes']);
+    Route::get('/personal_undone_exercises', [StudentController::class, 'personal_undone_exercises']);
     Route::get('/lecturer_course_classes', [LecturerController::class, 'lecturer_course_classes']);
     Route::get('/lecturer/course-classes', [LecturerController::class, 'get_course_classes_for_particular_lecturer']);
     Route::get('/course-class/{slug}/detail', [CourseClassController::class, 'course_class_detail']);

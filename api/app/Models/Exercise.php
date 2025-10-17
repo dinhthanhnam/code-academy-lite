@@ -50,4 +50,11 @@ class Exercise extends Model
     {
         return $this->belongsToMany(Language::class);
     }
+
+    public function course_classes(): BelongsToMany
+    {
+        return $this->belongsToMany(CourseClass::class, 'course_exercise', 'exercise_id', 'course_class_id')
+            ->using(CourseExercise::class)
+            ->withPivot(['week_number', 'deadline', 'is_hard_deadline', 'is_active']);
+    }
 }

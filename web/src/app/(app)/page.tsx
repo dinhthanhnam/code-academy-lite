@@ -38,37 +38,35 @@ export default function Home() {
   if (!isStudent) return null;
 
   return (
-    // <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-2 px-2">
-      <div className="max-w-screen mx-auto">
-        <div className={`grid gap-2 ${isMobile ? "grid-cols-1" : "grid-cols-5"}`}>
-          <div className={`${isMobile ? "col-span-1" : "col-span-3"}`}>
-            <PendingExerciseList
-              exercises={sampleExercises}
-              onSelectExercise={(exercise) => console.log(exercise)}
-            />
-          </div>
-          <div className={`${isMobile ? "col-span-1" : "col-span-2"} flex flex-col gap-2`}>
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden border-t-2 border-l-2 border-primary shadow-secondary">
-              <div className="p-2 mt-2 border-b flex items-center gap-2">
-                <FaTrophy className="text-yellow-600" />
-                <h2 className="text-md font-semibold text-gray-800">Bảng xếp hạng</h2>
-              </div>
-              <div className="overflow-auto">
-                <RankingBoard />
-              </div>
-            </div>
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden border-t-2 border-l-2 border-primary shadow-secondary">
-              <div className="p-2 border-b bg-gray-50 flex items-center gap-2">
-                <FaBook className="text-green-600" />
-                <h2 className="text-md font-semibold text-gray-800">Lớp học của tôi</h2>
-              </div>
-              <div className="overflow-auto">
-                <CourseList />
-              </div>
-            </div>
-          </div>
+    <div className="max-w-screen mx-auto">
+      <div className={`flex`}>
+        <div className={`flex`}>
+          <PendingExerciseList
+            exercises={sampleExercises}
+            onSelectExercise={(exercise) => console.log(exercise)}
+          />
         </div>
+        {/*<div className={`${isMobile ? "col-span-1" : "col-span-2"} flex flex-col gap-2`}>*/}
+        {/*  <div className="bg-white rounded-lg shadow-lg overflow-hidden border-t-2 border-l-2 border-primary shadow-secondary">*/}
+        {/*    <div className="p-2 mt-2 border-b flex items-center gap-2">*/}
+        {/*      <FaTrophy className="text-yellow-600" />*/}
+        {/*      <h2 className="text-md font-semibold text-gray-800">Bảng xếp hạng</h2>*/}
+        {/*    </div>*/}
+        {/*    <div className="overflow-auto">*/}
+        {/*      <RankingBoard />*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*  <div className="bg-white rounded-lg shadow-lg overflow-hidden border-t-2 border-l-2 border-primary shadow-secondary">*/}
+        {/*    <div className="p-2 border-b bg-gray-50 flex items-center gap-2">*/}
+        {/*      <FaBook className="text-green-600" />*/}
+        {/*      <h2 className="text-md font-semibold text-gray-800">Lớp học của tôi</h2>*/}
+        {/*    </div>*/}
+        {/*    <div className="overflow-auto">*/}
+        {/*      <CourseList />*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
-    // </div>
+    </div>
   );
 }
