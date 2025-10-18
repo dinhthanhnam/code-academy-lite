@@ -4,6 +4,7 @@ interface TestCase {
 }
 
 export default interface Exercise {
+    index?: number;
     id?: number;
     title?: string;
     description?: string;
@@ -26,13 +27,12 @@ export default interface Exercise {
 }
 
 export interface ExerciseListProps {
-    exercises: Exercise[];
+    exercises: Exercise[] | any;
     onSelectExercise?: (exercise: Exercise | null) => void;
 }
 
 export interface PendingExerciseRowProps {
-    exercise: Exercise;
+    exercise: Exercise | any;
     isSelected: boolean;
     onExerciseClick: (exercise: Exercise) => void;
-    onStartExercise: (courseId?: number | null, weekNumber?: number) => void;
   }

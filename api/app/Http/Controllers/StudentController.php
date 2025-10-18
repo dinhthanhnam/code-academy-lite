@@ -76,6 +76,7 @@ class StudentController extends Controller
             'exercises.level',
             'course_exercise.week_number',
             'course_classes.slug as course_class_slug',
+            'course_classes.name as course_class_name',
             'course_classes.start_date',
         ])
         ->get()

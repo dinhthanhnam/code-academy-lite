@@ -1,6 +1,6 @@
 import SideBarSection from "@/components/SideBar/SideBarSection";
 import DropDownButton from "@/components/Button/DropDownButton";
-import {TbSocial} from "react-icons/tb";
+import {TbHome, TbSocial} from "react-icons/tb";
 import {
     HiOutlineClipboardDocument,
     HiOutlineClipboardDocumentList
@@ -11,9 +11,7 @@ import {useLoadPersonalCourseClasses} from "@/hooks/useAuth";
 export default function StudentSideBarContent() {
     const { courses: personalCourseClasses } = useLoadPersonalCourseClasses();
     const staticOptionsData1 = {
-        exercise: [
-            { id: "irregular", name: "Bài tập tự do", path: "/irregular" },
-        ],
+        exercise: [],
         hall_of_fame: [
             { id: "xep-hang-khoa", name: "Bảng xếp hạng khoa", path: "/itde" }
         ]
@@ -21,6 +19,17 @@ export default function StudentSideBarContent() {
 
     return (
         <>
+            <div className = "pt-2 pb-2">
+                <DropDownButton
+                    id="home"
+                    title="Trang chủ"
+                    icon={TbHome}
+                    iconSize={22}
+                    iconStrokeWidth={2}
+                    activePath="/"
+                    chevron={false}
+                />
+            </div>
             <SideBarSection sectionName="Nền tảng">
                 <DropDownButton
                     id="chatbox"

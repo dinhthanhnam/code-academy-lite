@@ -18,6 +18,7 @@ export default function AdminSideBarContent() {
 
     return (
         <>
+            <div className={`mt-1`}></div>
             <SideBarSection sectionName="Quản lý">
                 <DropDownButton
                     id="general-management"

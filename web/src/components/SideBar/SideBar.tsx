@@ -56,48 +56,9 @@ export default function SideBar() {
                 >
             <div className="rounded-md flex flex-col border-foreground border-r-2 min-h-screen shadow-secondary shadow-lg">
                 <SideBarHeader />
-                <div className = "pt-2 pb-2">
-                    <DropDownButton
-                        id="home"
-                        title="Trang chủ"
-                        icon={TbHome}
-                        iconSize={22}
-                        iconStrokeWidth={2}
-                        activePath="/"
-                        chevron={false}
-                    />
-                </div>
 
-                <div className="flex flex-col flex-grow gap-4">
-                    
+                <div className="flex flex-col flex-grow gap-2">
                     {SidebarContent}
-
-                    {/*<div className="mt-auto flex flex-col items-center gap-2 pb-4">*/}
-                    {/*    <div*/}
-                    {/*        className={`relative w-11/12 flex flex-row gap-2 items-center justify-end duration-200 p-2 rounded-lg pr-4 */}
-                    {/*            ${activeNavigationOption === "settings" ? "bg-primary2" : "hover:bg-gray-100"}`}*/}
-                    {/*        onClick={() => {*/}
-                    {/*            dispatch(setActiveDropdown(null));*/}
-                    {/*            dispatch(setActiveNavigationOption("settings"));*/}
-                    {/*            router.push("/settings");*/}
-                    {/*        }}*/}
-                    {/*    >*/}
-                    {/*        <span className="select-none text-gray-600 text-sm">Cài đặt</span>*/}
-                    {/*        <IoSettingsOutline size={22} strokeWidth={0.7} />*/}
-                    {/*    </div>*/}
-                    {/*    <div*/}
-                    {/*        className={`relative w-11/12 flex flex-row gap-2 items-center justify-end duration-200 p-2 rounded-lg pr-4 */}
-                    {/*            ${activeNavigationOption === "help" ? "bg-primary2" : "hover:bg-gray-100"}`}*/}
-                    {/*        onClick={() => {*/}
-                    {/*            dispatch(setActiveDropdown(null));*/}
-                    {/*            dispatch(setActiveNavigationOption("help"));*/}
-                    {/*            router.push("/help");*/}
-                    {/*        }}*/}
-                    {/*    >*/}
-                    {/*        <span className="select-none text-gray-600 text-sm">Trợ giúp</span>*/}
-                    {/*        <TbHelp size={23} strokeWidth={1.6} />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </div>
             </div>
         </div>

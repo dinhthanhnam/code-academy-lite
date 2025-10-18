@@ -39,3 +39,13 @@ export const getCourseClassStudents = async (slug: string) => {
         throw error;
     }
 };
+
+export const getPendingExercises = async () => {
+    try {
+        const res = await api.get(`/api/personal_undone_exercises`);
+        return res.data;
+    } catch (error) {
+        console.error("Error fetching exercises:", error);
+        throw error;
+    }
+};

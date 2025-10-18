@@ -103,9 +103,9 @@ export default function CustomAceEditor({
                     <X/>
                 </button>
 
-                <div className={`overflow-hidden max-h-80 min-h-40`}>
+                <div className={`overflow-auto`}>
                     <h3 className="text-lg font-semibold text-white mb-2">Kết quả test cases:</h3>
-                    <div className="space-y-3 max-h-80 overflow-y-auto">
+                    <div className="space-y-3 max-h-80 overflow-auto">
                         {submissionResult.results.map((result, index) => {
                             const isAccepted = result.status === "Accepted";
                             const statusColor = isAccepted ? "text-green-400" : "text-red-400";
@@ -227,7 +227,7 @@ export default function CustomAceEditor({
             )}
 
             {/* Khu vực kết quả */}
-            <div className="mx-4">
+            <div className="mx-4 overflow-auto">
                 {/* Thông báo lỗi */}
                 {error && (
                     <div className="mt-4 p-3 bg-red-500/20 border border-red-500 rounded-md text-red-100 relative">

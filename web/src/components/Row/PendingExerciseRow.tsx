@@ -1,23 +1,18 @@
 import { BiChevronRight } from "react-icons/bi";
-import Exercise, { PendingExerciseRowProps } from "@/types/Exercise";
-import {MdCheckBoxOutlineBlank, MdOutlineCheckBox, MdOutlineCheckBoxOutlineBlank} from "react-icons/md";
+import { PendingExerciseRowProps } from "@/types/Exercise";
+import Link from "next/link";
 
-// Ánh xạ giữa course_id và tên lớp
-const courseIdToNameMapping: { [key: number]: string } = {
-  1: "K24HTTTB - IS52A",
-  2: "K24HTTTB - IS57A",
-  3: "K24HTTTB - IS22A",
-  4: "K24HTTTB - IS28A",
-  5: "K24HTTTB - IS29A",
-  6: "K24CNTTA - IS22A",
-  7: "K24CNTTA - IS28A",
+const levelMap: Record<string, string> = {
+  basic: "Cơ bản",
+  intermediate: "Trung cấp",
+  advanced: "Nâng cao",
+  exam: "Bài kiểm tra",
 };
 
 export default function PendingExerciseRow({
   exercise,
   isSelected,
-  onExerciseClick,
-  onStartExercise,
+  onExerciseClick
 }: PendingExerciseRowProps) {
   // Hàm để lấy tên lớp từ course_id
   const getCourseName = (courseId: number): string => {
@@ -32,30 +27,21 @@ export default function PendingExerciseRow({
         }`}
         onClick={() => onExerciseClick(exercise)}
       >
-        <td className="p-2 text-sm">
-          <div className="flex items-center justify-center">
-            {exercise.pivot.is_active === 1 ? (
-                <MdOutlineCheckBoxOutlineBlank size={18} />
-            ) : (
-                <MdOutlineCheckBox size={18} />
-            )}
-          </div>
-        </td>
         <td className="p-2 text-sm text-blue-600 hover:underline">
           {exercise.title || "Chưa có tiêu đề"}
         </td>
         <td
           className={`p-2 text-sm ${
-            exercise.level === "Cơ bản"
+            exercise.level === "basic"
               ? "text-green-600"
-              : exercise.level === "Trung cấp"
+              : exercise.level === "intermediate"
               ? "text-yellow-600"
-              : exercise.level === "Nâng cao"
+              : exercise.level === "advanced"
               ? "text-red-600"
               : "text-gray-600"
           }`}
         >
-          {exercise.level || "Không xác định"}
+          {levelMap[exercise.level] ?? "Không xác định"}
         </td>
         <td className="p-2 text-sm">
           {exercise.topics?.map((topic, index) => (
@@ -69,15 +55,15 @@ export default function PendingExerciseRow({
         </td>
         <td className="p-2 text-sm text-gray-600">
           <div className="flex items-center whitespace-nowrap">
-            {exercise.pivot?.course_id
-                ? getCourseName(exercise.pivot.course_id)
+            {exercise.course_class_name
+                ? exercise.course_class_name
                 : "Không có khóa học"}
             <BiChevronRight className="ml-1 text-gray-400" />
           </div>
         </td>
         <td className="p-2 text-sm text-gray-600">
-          {exercise.pivot?.deadline
-            ? new Date(exercise.pivot.deadline).toLocaleDateString("vi-VN")
+          {exercise.deadline
+            ? new Date(exercise.deadline).toLocaleDateString("vi-VN")
             : "Không có hạn nộp"}
         </td>
       </tr>
@@ -109,16 +95,16 @@ export default function PendingExerciseRow({
                 <div>
                   <p className="text-sm text-gray-500 uppercase tracking-wide">Khóa học</p>
                   <p className="text-sm font-semibold text-gray-700">
-                    {exercise.pivot?.course_id
-                      ? getCourseName(exercise.pivot.course_id)
+                    {exercise.course_class_name
+                      ? exercise.course_class_name
                       : "Không có khóa học"}
                   </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 uppercase tracking-wide">Hạn nộp</p>
                   <p className="text-sm font-semibold text-gray-700">
-                    {exercise.pivot?.deadline
-                      ? new Date(exercise.pivot.deadline).toLocaleDateString("vi-VN")
+                    {exercise.deadline
+                      ? new Date(exercise.deadline).toLocaleDateString("vi-VN")
                       : "Không có hạn nộp"}
                   </p>
                 </div>
@@ -138,9 +124,10 @@ export default function PendingExerciseRow({
               </div>
               <button
                 className="mt-2 w-full py-2 text-md bg-gradient-to-r from-blue-500 to-secondary text-white rounded-full font-semibold hover:from-blue-600 hover:to-blue-800 transition-all duration-200 shadow-md"
-                onClick={() => onStartExercise(exercise.pivot?.course_id, exercise.pivot?.week_number)}
               >
-                Làm bài ngay
+                <Link href={`exercises/${exercise.course_class_slug}`}>
+                  Làm bài ngay
+                </Link>
               </button>
             </div>
           </td>
