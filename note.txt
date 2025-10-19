@@ -1,0 +1,12 @@
+Có thể tuỳ chỉnh dữ liệu backend bằng file seeder
+
+Build ứng dụng node trước khi chạy docker composer build
+
+student14@example.com student14
+student5@example.com student5
+
+lecturer5@example.com lecturer5
+
+sửa NEXT_PUBLIC_API_URL, NEXT_PUBLIC_REVERB_HOST trong web/.env
+
+docker compose có thể sửa port của mysql thành 3306:3306
