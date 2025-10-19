@@ -1,0 +1,188 @@
+@startuml
+
+' ========== Tables ==========
+entity "users" {
+  *id: INT <<PK>>
+  --
+  name: VARCHAR
+  email: VARCHAR <<UNIQUE>>
+  identity_code: VARCHAR <<UNIQUE>>
+  email_verified_at: TIMESTAMP
+  password: VARCHAR
+  role: ENUM {student, lecturer, admin}
+  regular_class_id: INT <<FK>> <<NULLABLE>>
+}
+
+entity "regular_classes" {
+  *id: INT <<PK>>
+  --
+  class_code: VARCHAR
+  name: VARCHAR
+  slug: VARCHAR
+}
+
+entity "courses" {
+  *id: INT <<PK>>
+  --
+  course_code: VARCHAR <<UNIQUE>>
+  name: VARCHAR
+}
+
+entity "course_classes" {
+  *id: INT <<PK>>
+  --
+  assigned_regular_class_id: INT <<FK>> <<NULLABLE>>
+  course_class_code: VARCHAR <<UNIQUE>>
+  course_class_join_code: VARCHAR <<UNIQUE>>
+  name: VARCHAR
+  description: TEXT
+  active: TINYINT
+  start_date: DATETIME
+  course_id: INT <<FK>>
+  slug: VARCHAR
+}
+
+entity "exercises" {
+  *id: INT <<PK>>
+  --
+  title: VARCHAR
+  description: TEXT
+  test_cases: JSON
+  is_free: TINYINT
+}
+
+entity "submissions" {
+  *id: INT <<PK>>
+  --
+  user_id: INT <<FK>>
+  exercise_id: INT <<FK>>
+  course_class_id: INT <<FK>>
+  source_code: TEXT
+  language: VARCHAR
+  status: VARCHAR
+  execution_time: DOUBLE
+  memory_used: INT
+  output: TEXT
+  judge0_token: VARCHAR
+}
+
+entity "languages" {
+  *id: INT <<PK>>
+  --
+  name: VARCHAR <<UNIQUE>>
+  judge_language_id: INT
+}
+
+entity "topics" {
+  *id: INT <<PK>>
+  --
+  name: VARCHAR <<UNIQUE>>
+}
+
+entity "course_attendant" {
+  *id: INT <<PK>>
+  --
+  course_class_id: INT <<FK>>
+  user_id: INT <<FK>>
+  role: VARCHAR
+}
+
+entity "course_exercise" {
+  *id: INT <<PK>>
+  --
+  course_id: INT <<FK>> <<NULLABLE>>
+  course_class_id: INT <<FK>>
+  exercise_id: INT <<FK>>
+  week_number: INT
+  is_hard_deadline: TINYINT
+  is_active: TINYINT
+  deadline: DATETIME
+}
+
+entity "exercise_topic" {
+  *id: INT <<PK>>
+  --
+  exercise_id: INT <<FK>>
+  topic_id: INT <<FK>>
+}
+
+entity "exercise_language" {
+  *id: INT <<PK>>
+  --
+  exercise_id: INT <<FK>>
+  language_id: INT <<FK>>
+}
+
+entity "conversations" {
+  *id: INT <<PK>>
+  --
+  name: VARCHAR
+  course_class_id: INT <<FK>>
+  slug: VARCHAR <<UNIQUE>>
+}
+
+entity "messages" {
+  *id: INT <<PK>>
+  --
+  user_id: INT <<FK>>
+  course_class_id: INT <<FK>>
+  content: TEXT
+}
+
+' ========== Relationships ==========
+
+' users - regular_classes: 1-n
+users ||--o{ regular_classes : regular_class_id
+
+' courses - course_classes: 1-n
+courses ||--o{ course_classes : course_id
+
+' regular_classes - course_classes: 1-n
+regular_classes ||--o{ course_classes : assigned_regular_class_id
+
+' users - course_attendant: 1-n
+users ||--o{ course_attendant : user_id
+
+' course_classes - course_attendant: 1-n
+course_classes ||--o{ course_attendant : course_class_id
+
+' courses - course_exercise: 1-n
+courses ||--o{ course_exercise : course_id
+
+' course_classes - course_exercise: 1-n
+course_classes ||--o{ course_exercise : course_class_id
+
+' exercises - course_exercise: 1-n
+exercises ||--o{ course_exercise : exercise_id
+
+' exercises - exercise_topic: 1-n
+exercises ||--o{ exercise_topic : exercise_id
+
+' topics - exercise_topic: 1-n
+topics ||--o{ exercise_topic : topic_id
+
+' exercises - exercise_language: 1-n
+exercises ||--o{ exercise_language : exercise_id
+
+' languages - exercise_language: 1-n
+languages ||--o{ exercise_language : language_id
+
+' users - submissions: 1-n
+users ||--o{ submissions : user_id
+
+' exercises - submissions: 1-n
+exercises ||--o{ submissions : exercise_id
+
+' course_classes - submissions: 1-n
+course_classes ||--o{ submissions : course_class_id
+
+' course_classes - conversations: 1-1
+course_classes ||--|| conversations : course_class_id
+
+' users - messages: 1-n
+users ||--o{ messages : user_id
+
+' course_classes - messages: 1-n
+course_classes ||--o{ messages : course_class_id
+
+@enduml

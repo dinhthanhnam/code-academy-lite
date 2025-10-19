@@ -1,0 +1,26 @@
+@startuml
+|Sinh viên|
+:Truy cập giao diện bài tập;
+:Viết mã nguồn;
+:Nhấn "Nộp bài";
+
+|Frontend (Next.js)|
+:POST /submit-exercise(user_id, exercise_id, course_class_id, source_code, language);
+
+|Backend (Laravel)|
+:checkSessionToken();
+:Lưu submissions(user_id, exercise_id, course_class_id, source_code, language);
+:POST Judge0 /submissions(source_code, language);
+:Nhận judge0_token;
+:Poll Judge0 /submissions/{judge0_token};
+:Nhận output, status, execution_time, memory_used;
+:So sánh output với test case;
+:Cập nhật submissions(status, output, execution_time, memory_used);
+:Trả kết quả;
+
+|Frontend (Next.js)|
+:Hiển thị kết quả;
+
+|Sinh viên|
+:Xem kết quả;
+@enduml

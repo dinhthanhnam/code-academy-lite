@@ -1,0 +1,156 @@
+@startuml
+skinparam monochrome true
+skinparam linetype ortho
+' Nhóm người dùng và lớp niên chế
+class "users" {
+  +id: INT [PK]
+  +name: VARCHAR
+  +email: VARCHAR [UNIQUE]
+  +identity_code: VARCHAR [UNIQUE]
+  +email_verified_at: TIMESTAMP
+  +password: VARCHAR
+  +role: ENUM('student', 'lecturer', 'admin')
+  +regular_class_id: INT [FK]
+}
+
+class "regular_classes" {
+  +id: INT [PK]
+  +class_code: VARCHAR
+  +name: VARCHAR
+  +slug: VARCHAR
+}
+
+' Nhóm học phần và lớp học phần
+class "courses" {
+  +id: INT [PK]
+  +course_code: VARCHAR [UNIQUE]
+  +name: VARCHAR
+}
+
+class "course_classes" {
+  +id: INT [PK]
+  +assigned_regular_class_id: INT [FK]
+  +course_class_code: VARCHAR [UNIQUE]
+  +course_class_join_code: VARCHAR [UNIQUE]
+  +name: VARCHAR
+  +description: TEXT
+  +active: TINYINT
+  +start_date: DATETIME
+  +course_id: INT [FK]
+  +slug: VARCHAR
+}
+
+class "course_attendant" {
+  +id: INT [PK]
+  +course_class_id: INT [FK]
+  +user_id: INT [FK]
+  +role: VARCHAR
+}
+
+' Nhóm bài tập
+class "exercises" {
+  +id: INT [PK]
+}
+
+class "submissions" {
+  +id: INT [PK]
+  +user_id: INT [FK]
+  +exercise_id: INT [FK]
+  +course_class_id: INT [FK]
+  +source_code: TEXT
+  +language: VARCHAR
+  +status: VARCHAR
+  +execution_time: DOUBLE
+  +memory_used: INT
+  +output: TEXT
+  +judge0_token: VARCHAR
+}
+
+class "course_exercise" {
+  +id: INT [PK]
+  +course_id: INT [FK, NULLABLE]
+  +course_class_id: INT [FK]
+  +exercise_id: INT [FK]
+  +week_number: INT
+  +is_hard_deadline: TINYINT
+  +is_active: TINYINT
+  +deadline: DATETIME
+}
+
+class "topics" {
+  +id: INT [PK]
+  +name: VARCHAR
+}
+
+class "languages" {
+  +id: INT [PK]
+  +name: VARCHAR
+  +judge_language_id: INT
+}
+
+class "exercise_topic" {
+  +id: INT [PK]
+  +exercise_id: INT [FK]
+  +topic_id: INT [FK]
+}
+
+class "exercise_language" {
+  +id: INT [PK]
+  +exercise_id: INT [FK]
+  +language_id: INT [FK]
+}
+
+' Nhóm trò chuyện
+class "conversations" {
+  +id: INT [PK]
+  +name: VARCHAR
+  +course_class_id: INT [FK]
+  +slug: VARCHAR
+}
+
+class "messages" {
+  +id: INT [PK]
+  +user_id: INT [FK]
+  +course_class_id: INT [FK]
+  +content: TEXT
+}
+
+' Mối quan hệ với ký hiệu số lượng
+' Nhóm người dùng và lớp niên chế
+users "1" o--> "0..*" "regular_classes" : "regular_class_id" 
+users "1" o--> "0..*" "course_attendant" : "user_id"       
+users "1" o--> "0..*" "submissions" : "user_id"          
+users "1" o--> "0..*" "messages" : "user_id"             
+
+regular_classes "1" o--> "0..*" "course_classes" : "assigned_regular_class_id"  
+regular_classes "1" o--> "0..*" "users" : "id"                                
+
+' Nhóm học phần và lớp học phần
+courses "1" o--> "0..*" "course_classes" : "course_id"   
+courses "1" o--> "0..*" "course_exercise" : "course_id"    
+course_classes "1" o--> "0..*" "course_attendant" : "course_class_id"  ' 
+course_classes "1" o--> "0..*" "submissions" : "course_class_id"       
+course_classes "1" o--> "0..*" "course_exercise" : "course_class_id"  
+course_classes "1" o--> "0..*" "conversations" : "course_class_id"     
+course_classes "1" o--> "0..*" "messages" : "course_class_id"          
+
+' Nhóm bài tập
+submissions "1" o--> "1" "exercises" : "exercise_id"        
+course_exercise "1" o--> "0..1" "courses" : "course_id"        
+course_exercise "1" o--> "1" "course_classes" : "course_class_id"  
+course_exercise "1" o--> "1" "exercises" : "exercise_id"      
+
+exercise_topic "1" o--> "1" "exercises" : "exercise_id"      
+exercise_topic "1" o--> "1" "topics" : "topic_id"
+exercise_language "1" o--> "1" "exercises" : "exercise_id"    
+exercise_language "1" o--> "1" "languages" : "language_id"
+
+' Nhóm trò chuyện
+conversations "1" o--> "0..*" "messages" : "id"               
+
+' Điều chỉnh vị trí
+users -[hidden]down- regular_classes
+course_classes -[hidden]right- regular_classes
+course_classes -[hidden]right- users
+
+@enduml

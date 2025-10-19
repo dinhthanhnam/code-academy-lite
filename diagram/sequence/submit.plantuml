@@ -1,0 +1,46 @@
+@startuml
+
+' Tùy chỉnh giao diện
+skinparam defaultFontSize 18
+skinparam classBorderThickness 2
+skinparam arrowThickness 2
+skinparam classFontSize 18
+skinparam noteFontSize 16
+
+' Thành phần
+actor "Sinh viên" as Student
+boundary "Browser" as Browser
+control "Axios (Client)" as Axios
+control "Laravel Server" as Laravel
+control "Judge0" as Judge0
+entity "Database" as Database
+
+' Luồng tuần tự
+' Bước 1: Sinh viên vào giao diện nộp bài
+Student -> Browser: Chọn bài tập và nhập mã nguồn
+Browser -> Student: Hiển thị form nộp bài
+
+' Bước 2: Sinh viên gửi bài
+Student -> Browser: Nhấn "Nộp bài"
+Browser -> Axios: Gọi API nộp bài
+Axios -> Laravel: Gửi yêu cầu (kèm session cookie)
+
+' Bước 3: Backend xử lý và gửi tới Judge0
+Laravel -> Database: Kiểm tra bài tập và lớp học phần hợp lệ
+Database -> Laravel: Trả về thông tin bài tập và testcases
+loop Mỗi test case
+  Laravel -> Judge0: Gửi POST /submissions?wait=true (mã nguồn, testcases)
+  Judge0 -> Laravel: Trả về kết quả (stdout, status, time, memory)
+end
+' Bước 4: Lưu submission và trả kết quả
+Laravel -> Database: Lưu nội dung nộp bài (mã nguồn, status, time, memory, output)
+Database -> Laravel: Xác nhận lưu thành công
+Laravel -> Laravel: Chuẩn hoá lại response của Judge0
+Laravel -> Axios: Trả về kết quả (success, status, outputs)
+Axios -> Browser: Cập nhật giao diện với kết quả
+Browser -> Student: Hiển thị "Nộp bài thành công" + kết quả
+
+' Tiêu đề
+title Biểu đồ tuần tự: Nộp bài tập
+
+@enduml

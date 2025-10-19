@@ -1,0 +1,49 @@
+@startuml
+
+' Tùy chỉnh giao diện
+skinparam defaultFontSize 18
+skinparam classBorderThickness 2
+skinparam arrowThickness 2
+skinparam classFontSize 18
+skinparam noteFontSize 16
+
+' Thành phần
+actor "Giảng viên" as Lecturer
+boundary "Browser" as Browser
+control "Axios (Client)" as Axios
+control "Laravel Server" as Laravel
+entity "Database" as Database
+
+' Luồng tuần tự
+' Bước 1: Giảng viên gọi URL kèm slug
+Lecturer -> Browser: Truy cập URL với slug
+Browser -> Axios: Gọi API lấy thông tin lớp học, sinh viên, bài tập theo slug
+Axios -> Laravel: Gửi yêu cầu (kèm session cookie)
+
+' Bước 2: Backend lấy dữ liệu ban đầu của CourseClass
+Laravel -> Database: Truy vấn thông tin lớp học, sinh viên, bài tập theo slug
+Database -> Laravel: Trả về thông tin lớp học, sinh viên, bài tập
+Laravel -> Axios: Trả về dữ liệu ban đầu
+Axios -> Browser: Render giao diện với dữ liệu có được
+Lecturer -> Browser: Nhấn nút "Tạo bài tập mới"
+Browser -> Lecturer: Hiển thị form tạo bài tập
+
+' Bước 3: Giảng viên nhập và gửi yêu cầu tạo bài tập
+Lecturer -> Browser: Nhập đầy đủ thông tin và nhấn "Tạo bài tập"
+Browser -> Axios: Gọi API tạo bài tập
+Axios -> Laravel: Gửi yêu cầu (kèm session cookie)
+
+' Bước 4: Backend xử lý
+Laravel -> Database: Tạo bản ghi bài tập mới
+Database -> Laravel: Trả về bài tập mới
+Laravel -> Database: Tạo bản ghi liên kết trong course_exercise bằng mã bài tập vừa tạo
+Database -> Laravel: Trả về thông tin bài tập
+' Bước 5: Trả kết quả về giao diện
+Laravel -> Axios: Trả về phản hồi (success, bài tập mới)
+Axios -> Browser: Cập nhật giao diện với kết quả
+Browser -> Lecturer: Hiển thị bài tập vừa tạo vào danh sách bài tập
+
+' Tiêu đề
+title Biểu đồ tuần tự: Giảng viên tạo bài tập lập trình
+
+@enduml

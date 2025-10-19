@@ -1,0 +1,51 @@
+@startuml
+
+skinparam defaultFontSize 18
+skinparam classBorderThickness 2
+skinparam arrowThickness 2
+skinparam classFontSize 18
+skinparam noteFontSize 16
+
+actor "NSD" as User
+boundary "Trình duyệt" as Browser
+control "Next Middleware" as Middleware
+control "Next Server" as NextServer
+control "Axios (Client)" as Axios
+control "Laravel Server" as Laravel
+entity "CSDL" as Database
+
+' Bước 1: Người dùng truy cập trang web
+User -> Browser: Truy cập trang web
+Browser -> NextServer: Yêu cầu trang (SSR)
+NextServer -> Browser: Trả về HTML ban đầu (SSR)
+Browser -> User: Hiển thị giao diện ban đầu
+Browser -> Axios: Gọi API để lấy dữ liệu ban đầu (stateful fetch)
+Axios -> Laravel: Gửi yêu cầu API (kèm session cookie)
+Laravel -> Database: Truy vấn dữ liệu
+Database -> Laravel: Trả về dữ liệu
+Laravel -> Axios: Trả về dữ liệu (nếu xác thực thành công)
+Axios -> Browser: Cập nhật giao diện với dữ liệu từ API
+Browser -> User: Hiển thị trang hoàn chỉnh
+
+' Bước 2: Người dùng chuyển trang trong SPA
+User -> Browser: Chuyển trang (SPA navigation)
+Browser -> Middleware: Kiểm tra route
+Middleware -> Laravel: Gọi /check/auth (kèm session cookie)
+Laravel -> Database: Kiểm tra trạng thái người dùng
+Database -> Laravel: Trả về thông tin trạng thái
+Laravel -> Middleware: Trả về trạng thái người dùng (đã xác thực hay chưa)
+Middleware -> Browser: Cho phép chuyển trang (nếu xác thực thành công)
+
+' Bước 3: Client fetch dữ liệu từ backend
+Browser -> Axios: Gọi API để lấy dữ liệu (stateful fetch)
+Axios -> Laravel: Gửi yêu cầu API (kèm session cookie)
+Laravel -> Database: Truy vấn dữ liệu
+Database -> Laravel: Trả về dữ liệu
+Laravel -> Axios: Trả về dữ liệu (nếu xác thực thành công)
+Axios -> Browser: Cập nhật giao diện với dữ liệu mới
+Browser -> User: Hiển thị dữ liệu
+
+' Tiêu đề biểu đồ
+title Biểu đồ tuần tự: Cơ chế xác thực và điều hướng
+
+@enduml

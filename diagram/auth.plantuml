@@ -1,0 +1,29 @@
+@startuml Auth
+actor User
+
+boundary "NextClient" as NextClient
+control "NextServer" as NextServer
+control "NextMiddleware" as NextMiddleware
+control "LaravelAPI" as LaravelAPI
+entity "Database" as Database
+
+User -> NextClient: requestAccess()
+NextClient -> NextServer: requestSSR()
+NextServer -> LaravelAPI: authenticate(credentials)
+LaravelAPI -> Database: validateUser(credentials)
+Database -> LaravelAPI: userData
+LaravelAPI -> NextClient: Set-Cookie(sessionToken)
+NextServer -> NextClient: renderPage()
+NextClient -> User: displayUI()
+
+== Người dùng thực hiện API request từ FE ==
+User -> NextClient: performAction()
+NextClient -> LaravelAPI: sendRequestWithToken(sessionToken)
+LaravelAPI -> NextClient: API Response
+
+== Người dùng điều hướng giữa các trang FE ==
+User -> NextClient: navigateToAnotherPage()
+NextClient -> NextMiddleware: checkSessionToken()
+NextMiddleware -> LaravelAPI: verifyToken(sessionToken)
+NextMiddleware -> NextClient: allowPageAccess()
+@enduml

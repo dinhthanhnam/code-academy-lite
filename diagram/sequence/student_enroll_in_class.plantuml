@@ -1,0 +1,38 @@
+@startuml
+
+skinparam defaultFontSize 18
+skinparam classBorderThickness 2
+skinparam arrowThickness 2
+skinparam classFontSize 18
+' Thành phần
+actor "Sinh viên" as Student
+boundary "Trình duyệt" as Browser
+control "Axios (Client)" as Axios
+control "Laravel Server" as Laravel
+entity "Database" as Database
+
+' Luồng tuần tự
+' Bước 1: Sinh viên vào giao diện và nhập mã tham gia
+Student -> Browser: Chọn "Tham gia lớp học phần"
+Browser -> Student: Hiển thị form nhập mã
+
+' Bước 2: Sinh viên gửi yêu cầu tham gia
+Student -> Browser: Nhấn "Tham gia" với mã
+Browser -> Axios: Gọi API
+Axios -> Laravel: Gửi yêu cầu (kèm session cookie và mã)
+
+' Bước 3: Backend xử lý
+Laravel -> Database: Kiểm tra mã hợp lệ
+Database -> Laravel: Trả về lớp học phần (nếu mã đúng)
+Laravel -> Database: Thêm sinh viên vào lớp học phần
+Database -> Laravel: Xác nhận cập nhật thành công
+Laravel -> Axios: Trả về phản hồi (thành công/thất bại)
+
+' Bước 4: Cập nhật giao diện
+Axios -> Browser: Cập nhật giao diện với kết quả
+Browser -> Student: Hiển thị thông báo "Đã tham gia lớp học" (hoặc lỗi nếu thất bại)
+
+' Tiêu đề
+title Biểu đồ tuần tự: Sinh viên tham gia lớp học
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml AdminLoginUseCase
+
+actor Admin
+
+Admin --> (Login) : enters credentials
+(Login) --> (Validate Credentials) : sends data
+(Validate Credentials) --> (Access Dashboard) : on success
+(Login) .> (Logout) : <<extends>>
+
+note right of (Validate Credentials)
+  System checks username and password
+  against stored admin data
+end note
+
+note right of (Access Dashboard)
+  Admin gains access to restricted
+  dashboard features
+end note
+
+@enduml
+
+@startuml CreateUserUseCase
+actor Admin
+Admin --> (Tạo người dùng mới)
+note right: Admin creates a new user account
+@enduml
+

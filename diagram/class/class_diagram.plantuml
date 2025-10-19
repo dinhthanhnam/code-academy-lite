@@ -1,0 +1,176 @@
+@startuml
+
+enum Role {
+  student
+  lecturer
+  admin
+}
+
+class User {
+  - id: int
+  - name: string
+  - email: string
+  - identityCode: string
+  - password: string
+  - role: Role
+  - regularClass: RegularClass
+  - courseClasses: List<CourseClass>
+  - messages: List<Message>
+  - submissions: List<Submission>
+  + login(username: string, password: string): bool
+  + register(name: string, email: string, password: string, identityCode: string): bool
+}
+
+class RegularClass {
+  - id: int
+  - classCode: string
+  - name: string
+  - slug: string
+  - students: List<User>
+}
+
+class Course {
+  - id: int
+  - courseCode: string
+  - name: string
+  - courseClasses: List<CourseClass>
+}
+
+class CourseClass {
+  - id: int
+  - courseClassCode: string
+  - courseClassJoinCode: string
+  - name: string
+  - description: string
+  - active: bool
+  - startDate: datetime
+  - slug: string
+  - course: Course
+  - courseAttendants: List<CourseAttendant>
+  - courseExercises: List<CourseExercise>
+  - students: List<User>
+  - conversation: Conversation
+  + addStudent(student: User): void
+  + removeStudent(student: User): void
+  + assignExercise(exercise: Exercise, week: int, deadline: datetime): void
+}
+
+class Exercise {
+  - id: int
+  - title: string
+  - description: string
+  - testCases: json
+  - isFree: bool
+  - courseExercises: List<CourseExercise>
+  - submissions: List<Submission>
+  - languages: List<Language>
+  - topics: List<Topic>
+  + evaluateSubmission(submission: Submission): Result
+}
+
+class Submission {
+  - id: int
+  - sourceCode: string
+  - language: string
+  - status: string
+  - executionTime: double
+  - memoryUsed: int
+  - output: string
+  - judge0Token: string
+  - user: User
+  - exercise: Exercise
+  + submit(user: User, exercise: Exercise): void
+}
+
+class Language {
+  - id: int
+  - name: string
+  - judgeLanguageId: int
+  - exercises: List<Exercise>
+}
+
+class Topic {
+  - id: int
+  - name: string
+  - exercises: List<Exercise>
+}
+
+class CourseAttendant {
+  - id: int
+  - role: string
+  - user: User
+  - courseClass: CourseClass
+}
+
+class CourseExercise {
+  - id: int
+  - weekNumber: int
+  - isHardDeadline: bool
+  - isActive: bool
+  - deadline: datetime
+  - courseClass: CourseClass
+  - exercise: Exercise
+}
+
+class Conversation {
+  - id: int
+  - name: string
+  - slug: string
+  - courseClass: CourseClass
+  - messages: List<Message>
+  + sendMessage(user: User, content: string): void
+}
+
+class Message {
+  - id: int
+  - content: string
+  - user: User
+  - conversation: Conversation
+}
+
+' Relationships
+
+' User has a role
+User o-- Role
+
+' User belongs to a regular class
+User o-- RegularClass
+RegularClass "1" *-- "many" User : students
+
+' User and CourseClass relationships
+User "many" o-- "many" CourseClass : enrolls in >
+CourseClass "many" o-- "many" User : students
+
+' CourseAttendant relationships
+CourseAttendant "many" -- "1" User
+CourseAttendant "many" -- "1" CourseClass
+
+' Course and CourseClass relationships
+Course "1" *-- "many" CourseClass : has >
+
+' CourseClass and Exercise relationships through CourseExercise
+CourseClass "1" *-- "many" CourseExercise
+CourseExercise "many" -- "1" Exercise
+
+' CourseClass and Conversation
+CourseClass "1" *-- "1" Conversation
+
+' Conversation and Message
+Conversation "1" *-- "many" Message
+
+' User and Message
+User "1" -- "many" Message : sends >
+
+' User and Submission
+User "1" -- "many" Submission : creates >
+
+' Exercise and Submission
+Exercise "1" -- "many" Submission : has >
+
+' Exercise and Language (many-to-many)
+Exercise "many" o-- "many" Language
+
+' Exercise and Topic (many-to-many)
+Exercise "many" o-- "many" Topic
+
+@enduml

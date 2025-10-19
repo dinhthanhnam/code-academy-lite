@@ -1,0 +1,206 @@
+@startuml
+
+skinparam defaultFontSize 18 
+skinparam monochrome true
+skinparam linetype ortho
+skinparam classBorderThickness 2
+skinparam arrowThickness 2
+skinparam classFontSize 18
+
+enum Role {
+  student
+  lecturer
+  admin
+}
+
+class User {
+  - id: int
+  - name: string
+  - email: string
+  - identityCode: string
+  - password: string
+  - role: Role
+  - regularClass: RegularClass
+  - courseClasses: List<CourseClass>
+  - messages: List<Message>
+  - submissions: List<Submission>
+  + login(username: string, password: string): bool
+  + register(name: string, email: string, password: string, identityCode: string): bool
+  + getSubmissionsForExercise(exercise: Exercise): List<Submission>
+  + enrollCourseClass(courseClass: CourseClass): void
+}
+
+class RegularClass {
+  - id: int
+  - classCode: string
+  - name: string
+  - slug: string
+  - students: List<User>
+  + addStudent(student: User): void
+  + removeStudent(student: User): void
+}
+
+class Course {
+  - id: int
+  - courseCode: string
+  - name: string
+  - courseClasses: List<CourseClass>
+  + createCourseClass(code: string, name: string, description: string): CourseClass
+}
+
+class CourseClass {
+  - id: int
+  - courseClassCode: string
+  - courseClassJoinCode: string
+  - name: string
+  - description: string
+  - active: bool
+  - startDate: datetime
+  - slug: string
+  - course: Course
+  - courseAttendants: List<CourseAttendant>
+  - courseExercises: List<CourseExercise>
+  - students: List<User>
+  - conversation: Conversation
+  - submissions: List<Submission>
+  + addStudent(student: User): void
+  + removeStudent(student: User): void
+  + assignExercise(exercise: Exercise, week: int, deadline: datetime): void
+  + getSubmissions(): List<Submission>
+  + toggleActive(): void
+}
+
+class Exercise {
+  - id: int
+  - title: string
+  - description: string
+  - testCases: json
+  - isFree: bool
+  - courseExercises: List<CourseExercise>
+  - submissions: List<Submission>
+  - languages: List<Language>
+  - topics: List<Topic>
+  + evaluateSubmission(submission: Submission): Result
+  + addTestCase(input: string, expectedOutput: string): void
+  + getSubmissions(): List<Submission>
+}
+
+class Submission {
+  - id: int
+  - sourceCode: string
+  - language: string
+  - status: string
+  - executionTime: double
+  - memoryUsed: int
+  - output: string
+  - judge0Token: string
+  - user: User
+  - exercise: Exercise
+  - courseClass: CourseClass  ' Thêm quan hệ với CourseClass
+  + submit(user: User, exercise: Exercise, courseClass: CourseClass): void
+  + getResult(): Result
+  + updateStatus(status: string): void
+}
+
+class Language {
+  - id: int
+  - name: string
+  - judgeLanguageId: int
+  - exercises: List<Exercise>
+}
+
+class Topic {
+  - id: int
+  - name: string
+  - exercises: List<Exercise>
+}
+
+class CourseAttendant {
+  - id: int
+  - role: string
+  - user: User
+  - courseClass: CourseClass
+  + assignRole(role: string): void
+}
+
+class CourseExercise {
+  - id: int
+  - weekNumber: int
+  - isHardDeadline: bool
+  - isActive: bool
+  - deadline: datetime
+  - courseClass: CourseClass
+  - exercise: Exercise
+  + toggleActive(): void
+  + updateDeadline(newDeadline: datetime): void
+}
+
+class Conversation {
+  - id: int
+  - name: string
+  - slug: string
+  - courseClass: CourseClass
+  - messages: List<Message>
+  + sendMessage(user: User, content: string): void
+  + getMessages(): List<Message>
+  + editMessage(messageId: int, newContent: string): void
+  + deleteMessage(messageId: int): void
+}
+
+class Message {
+  - id: int
+  - content: string
+  - user: User
+  - conversation: Conversation
+  + editContent(newContent: string): void
+}
+
+' Relationships
+
+' User has a role
+User o-- Role
+
+' User belongs to a regular class
+User o-- RegularClass
+RegularClass o-- User : students
+
+' User and CourseClass relationships
+User o-- CourseClass : enrolls in >
+CourseClass o-- User : students
+
+' CourseAttendant relationships
+CourseAttendant o-- User
+CourseAttendant o-- CourseClass
+
+' Course and CourseClass relationships
+Course *-- CourseClass : has >
+
+' CourseClass and Exercise relationships through CourseExercise
+CourseClass *-- CourseExercise
+CourseExercise o-- Exercise
+
+' CourseClass and Conversation
+CourseClass *-- Conversation
+
+' Conversation and Message
+Conversation *-- Message
+
+' User and Message
+User o-- Message : sends >
+
+' User and Submission
+User o-- Submission : creates >
+
+' Exercise and Submission
+Exercise o-- Submission : has >
+
+' CourseClass and Submission
+CourseClass o-- Submission : contains >
+
+' Exercise and Language (n-to-n)
+Exercise o-- Language
+
+' Exercise and Topic (n-to-n)
+Exercise o-- Topic
+
+@enduml
