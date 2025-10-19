@@ -106,7 +106,7 @@ export default function UserModal({ onClose, updatedUser, selectedUser, type = "
                         type="text"
                         name="email"
                         label="Email người dùng"
-                        placeholder="dtn@hvnh.edu.vn"
+                        placeholder="user@example.com"
                         value={payload.email}
                         onChange={(e) => handleChange("email", e.target.value)}
                     />

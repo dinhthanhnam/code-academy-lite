@@ -15,11 +15,11 @@ class LecturerSeeder extends Seeder
     public function run(): void
     {
         $lecturers = [
-            ['name' => 'Triệu Thu Hương', 'email' => 'huongtt@hvnh.edu.vn', 'password' => 'huong123'],
-            ['name' => 'Trần Viết Huy', 'email' => 'huytv@hvnh.edu.vn', 'password' => 'huy123'],
-            ['name' => 'Nguyễn Ngọc Thuỵ', 'email' => 'thuynn@hvnh.edu.vn', 'password' => 'thuy123'],
-            ['name' => 'Giang Thu Huyền', 'email' => 'huyengt@hvnh.edu.vn', 'password' => 'huyen123'],
-            ['name' => 'Lê Văn Hùng', 'email' => 'lehung@hvnh.edu.vn', 'password' => 'lehung123'],
+            ['name' => 'Giảng viên 1', 'email' => 'lecturer1@example.com', 'password' => 'lecturer1'],
+            ['name' => 'Giảng viên 3', 'email' => 'lecturer2@example.com', 'password' => 'lecturer2'],
+            ['name' => 'Giảng viên 2', 'email' => 'lecturer3@example.com', 'password' => 'lecturer3'],
+            ['name' => 'Giảng viên 4', 'email' => 'lecturer4@example.com', 'password' => 'lecturer4'],
+            ['name' => 'Giảng viên 5', 'email' => 'lecturer5@example.com', 'password' => 'lecturer5'],
         ];
         foreach ($lecturers as $lecturer) {
             User::create([

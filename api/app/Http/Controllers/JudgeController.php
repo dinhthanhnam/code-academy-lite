@@ -41,7 +41,7 @@ class JudgeController extends Controller
         }
 
         $exercise = Exercise::find($exerciseId);
-        \Log::info('Exercise test case: '. $exercise->test_cases);
+//         \Log::info('Exercise test case: '. $exercise->test_cases);
         if (!$exercise) {
             return response()->json(['success' => false, 'message' => 'Không tìm thấy bài tập'], 404);
         }
@@ -62,7 +62,7 @@ class JudgeController extends Controller
         foreach ($testCases as $test) {
             $submissionData = [
                 'source_code'    => $sourceCode,
-                'language_id'    => $language ? $language->judge_language_id : 54,
+                'language_id'    => $language->judge_language_id ? $language->judge_language_id : 54,
                 // 'language_id'    => 71,
                 'stdin'          => $test['stdin'],
                 'expected_output'=> $test['expected_output'],

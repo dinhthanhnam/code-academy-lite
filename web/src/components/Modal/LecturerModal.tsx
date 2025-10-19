@@ -85,10 +85,10 @@ export function LecturerModal({ onClose, newLecturer, updatedLecturer, selectedL
                 {/* Heading */}
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold text-gray-800">
-                        {type === "create" ? "Tạo học phần mới" : `Chỉnh sửa học phần ${selectedLecturer.name}`}
+                        {type === "create" ? "Tạo giảng viên mới" : `Chỉnh sửa giảng viên ${selectedLecturer.name}`}
                     </h2>
                     <p className="text-sm text-gray-500 mt-1">
-                        Điền thông tin để {type === "create" ? "tạo" : "chỉnh sửa"} một học phần
+                        Điền thông tin để {type === "create" ? "tạo" : "chỉnh sửa"} giảng viên
                     </p>
                 </div>
 
@@ -110,7 +110,7 @@ export function LecturerModal({ onClose, newLecturer, updatedLecturer, selectedL
                         type="text"
                         name="email"
                         label="Email giảng viên"
-                        placeholder="dtn@hvnh.edu.vn"
+                        placeholder="user@example.com"
                         value={payload.email}
                         onChange={(e) => handleChange("email", e.target.value)}
                     />

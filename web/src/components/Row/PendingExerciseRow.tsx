@@ -14,10 +14,6 @@ export default function PendingExerciseRow({
   isSelected,
   onExerciseClick
 }: PendingExerciseRowProps) {
-  // Hàm để lấy tên lớp từ course_id
-  const getCourseName = (courseId: number): string => {
-    return courseIdToNameMapping[courseId] || `Khóa học ${courseId}`;
-  };
 
   return (
     <>

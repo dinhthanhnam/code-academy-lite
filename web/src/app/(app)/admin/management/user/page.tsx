@@ -123,9 +123,6 @@ export default function AdminManagementUserPage() {
                     </div>
                 </div>
             </div>
-            <div className={`bg-white p-2 rounded-lg shadow flex border flex-grow border-secondary ${isMobile ? "w-full" : "w-1/2"}`}>
-                <UserDetailContainer />
-            </div>
 
             {/* Edit/Create Course Modal*/}
             {userModal.active && (

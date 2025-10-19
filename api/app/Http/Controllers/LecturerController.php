@@ -174,7 +174,7 @@ class LecturerController extends Controller
                 'level' => $validated['level'],
                 'example_input' => $validated['example_input'] ?? null,
                 'example_output' => $validated['example_output'],
-                'test_cases' => $validated['test_cases'],
+                'test_cases' => json_encode($validated['test_cases'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
                 'is_free' => $validated['is_free'] ?? false,
                 'time_limit' => $validated['time_limit'],
                 'memory_limit' => $validated['memory_limit'],

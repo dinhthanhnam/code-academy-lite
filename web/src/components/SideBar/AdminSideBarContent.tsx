@@ -7,7 +7,6 @@ export default function AdminSideBarContent() {
     const staticOptionsData = {
         management: [
             { id: "courses&course-class", name: "Lớp học phần", path: "/course" },
-            { id: "exercise", name: "Bài tập", path: "/exercise" },
             { id: "lecturer", name: "Giảng viên", path: "/lecturer" },
             { id: "user", name: "Người dùng", path: "/user" },
         ],
