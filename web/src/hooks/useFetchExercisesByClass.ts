@@ -13,7 +13,7 @@ export function useCourseClassExercises(slug: string) {
         const fetchExercises = async () => {
             setLoading(true);
             try {
-                const res = await getCourseClassExercises(slug);
+                const res = await getCourseClassExercises(slug, 1, 100);
                 console.log("API Response:", res);
                 setExercises(res.data || []);
             } catch (err) {

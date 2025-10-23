@@ -15,11 +15,12 @@ export const getCourseClass = async (slug: string) => {
     }
 };
 
-export const getCourseClassExercises = async (slug: string, page = 1) => {
+export const getCourseClassExercises = async (slug: string, page = 1, take = 15) => {
     try {
         const res = await api.get<PaginatedExercise>(`/api/course-class/${slug}/exercises`, {
             params: {
                 page,
+                take
             }
         });
         return res.data;

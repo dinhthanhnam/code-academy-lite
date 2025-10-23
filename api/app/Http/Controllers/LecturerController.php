@@ -8,8 +8,10 @@ use App\Models\CourseExercise;
 use App\Models\Exercise;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Str;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -150,20 +152,20 @@ class LecturerController extends Controller
     public function lecturer_create_course_class_exercise(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'level' => 'required|in:basic,intermediate,advanced,exam',
+            'title' => 'sometimes|string',
+            'description' => 'sometimes|string',
+            'level' => 'sometimes|in:basic,intermediate,advanced,exam',
             'example_input' => 'nullable|string',
-            'example_output' => 'required|string',
-            'test_cases' => 'required|array',
-            'time_limit' => 'required|integer',
-            'memory_limit' => 'required|integer',
+            'example_output' => 'sometimes|string',
+            'test_cases' => 'sometimes|array',
+            'time_limit' => 'sometimes|integer',
+            'memory_limit' => 'sometimes|integer',
             'is_free' => 'boolean',
             'is_active' => 'boolean',
             'is_test' => 'boolean',
-            'course_class_id' => 'required|exists:course_classes,id',
-            'week_number' => 'required|integer',
-            'deadline' => 'required|date',
+            'course_class_id' => 'sometimes|exists:course_classes,id',
+            'week_number' => 'sometimes|integer',
+            'deadline' => 'sometimes|date',
             'is_hard_deadline' => 'boolean'
         ]);
         try {
@@ -202,4 +204,115 @@ class LecturerController extends Controller
             ]);
         }
     }
+
+    public function lecturer_update_course_class_exercise(Request $request, int $id)
+    {
+        $validated = $request->validate([
+            'title' => 'sometimes|string',
+            'description' => 'sometimes|string',
+            'level' => 'sometimes|in:basic,intermediate,advanced,exam',
+            'example_input' => 'sometimes|nullable|string',
+            'example_output' => 'sometimes|nullable|string',
+            'test_cases' => 'sometimes|array',
+            'time_limit' => 'sometimes|integer',
+            'memory_limit' => 'sometimes|integer',
+            'is_free' => 'sometimes|boolean',
+            'is_active' => 'sometimes|boolean',
+            'is_test' => 'sometimes|boolean',
+            'course_class_id' => 'exists:course_classes,id',
+            'week_number' => 'sometimes|integer',
+            'deadline' => 'sometimes|date',
+            'is_hard_deadline' => 'sometimes|boolean',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Tìm exercise cần update
+            $exercise = Exercise::findOrFail($id);
+
+            // Cập nhật exercise
+            $exercise->update([
+                'title' => $validated['title'] ?? $exercise->title,
+                'description' => $validated['description'] ?? $exercise->description,
+                'level' => $validated['level'] ?? $exercise->level,
+                'example_input' => $validated['example_input'] ?? $exercise->example_input,
+                'example_output' => $validated['example_output'] ?? $exercise->example_output,
+                'test_cases' => isset($validated['test_cases'])
+                    ? json_encode($validated['test_cases'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+                    : $exercise->test_cases,
+                'is_free' => $validated['is_free'] ?? $exercise->is_free,
+                'time_limit' => $validated['time_limit'] ?? $exercise->time_limit,
+                'memory_limit' => $validated['memory_limit'] ?? $exercise->memory_limit,
+            ]);
+
+            // Nếu có dữ liệu gán lớp học thì cập nhật hoặc tạo mới CourseExercise
+            if (isset($validated['course_class_id'])) {
+                CourseExercise::updateOrCreate(
+                    [
+                        'exercise_id' => $exercise->id,
+                        'course_class_id' => $validated['course_class_id'],
+                    ],
+                    [
+                        'week_number' => $validated['week_number'] ?? null,
+                        'deadline' => $validated['deadline'] ?? null,
+                        'is_hard_deadline' => $validated['is_hard_deadline'] ?? false,
+                        'is_active' => $validated['is_active'] ?? true,
+                        'is_test' => $validated['is_test'] ?? false,
+                    ]
+                );
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Exercise updated successfully.',
+                'success' => true,
+                'exercise' => $exercise,
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => 'Error: ' . $e->getMessage(),
+                'success' => false,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function lecturer_delete_course_class_exercise(Request $request, int $id)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Tìm exercise
+            $exercise = Exercise::findOrFail($id);
+
+            // Xóa các bản ghi liên kết trong course_exercises (nếu có)
+            CourseExercise::where('exercise_id', $exercise->id)->delete();
+
+            // Xóa exercise chính
+            $exercise->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Exercise deleted successfully.',
+                'success' => true,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Exercise not found.',
+                'success' => false,
+            ], Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error: ' . $e->getMessage(),
+                'success' => false,
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
 }

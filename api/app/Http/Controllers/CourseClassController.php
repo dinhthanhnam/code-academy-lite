@@ -50,12 +50,13 @@ class CourseClassController extends Controller
         }
     }
 
-    public function course_class_exercises(string $slug) {
+    public function course_class_exercises(Request $request, string $slug) {
+        $take = (int) $request->query("take", 15);
         try {
             if ($slug == "irregular"){
                 $exercises = Exercise::where('is_free', 1)
                     ->with(['topics', 'language'])
-                    ->paginate(15);
+                    ->paginate($take);
             }
             else{
                 $course_class = CourseClass::where('slug', $slug)->first();
@@ -69,7 +70,7 @@ class CourseClassController extends Controller
 
                 $exercises = $course_class->exercises()
                     ->with(['topics', 'language'])
-                    ->paginate(15);
+                    ->paginate($take);
             }
 
             return ExerciseResource::collection($exercises);

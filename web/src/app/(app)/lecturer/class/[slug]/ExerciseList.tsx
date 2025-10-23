@@ -7,6 +7,7 @@ import AddExerciseModal from "./AddExerciseModal";
 import ExerciseRow from "./ExerciseRow";
 import CommonPagination from "@/components/Pagination/CommonPagination";
 import Exercise from "@/types/Exercise";
+import EditExerciseModal from "@/app/(app)/lecturer/class/[slug]/EditExerciseModal";
 
 export default function ExerciseList() {
     const { exercises, fetchExercises } = useClassContext();

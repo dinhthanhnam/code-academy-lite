@@ -77,3 +77,21 @@ export const lecturerCreateCourseClassExercise = async  (payload: any) => {
     }
 }
 
+export const lecturerUpdateCourseClassExercise = async  (payload: any, id: number) => {
+    try {
+        const res = await api.patch(`/lecturer/update-exercise/${id}`, payload);
+        return res.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const lecturerDeleteCourseClassExercise = async  (id: number) => {
+    try {
+        const res = await api.delete(`/lecturer/delete-exercise/${id}`);
+        return res.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+

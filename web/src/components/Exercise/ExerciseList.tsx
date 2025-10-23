@@ -2,7 +2,9 @@
 import React, { useState } from "react";
 import Exercise, { ExerciseListProps } from "@/types/Exercise";
 import ExerciseRow from "../Row/ExerciseRow";
-import { useParams } from "next/navigation"; // Import useParams để lấy slug
+import { useParams } from "next/navigation";
+import CommonPagination from "@/components/Pagination/CommonPagination";
+import {useCourseClassExercises} from "@/hooks/useFetchExercisesByClass"; // Import useParams để lấy slug
 
 export default function ExerciseList({ exercises, onSelectExercise }: ExerciseListProps) {
     const [selected, setSelected] = useState<number | string | null>(null);
@@ -127,6 +129,7 @@ export default function ExerciseList({ exercises, onSelectExercise }: ExerciseLi
                         Không có bài tập nào để hiển thị.
                     </div>
                 )}
+
             </div>
         </div>
     );
