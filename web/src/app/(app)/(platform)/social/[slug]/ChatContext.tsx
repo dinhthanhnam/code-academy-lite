@@ -61,7 +61,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
             channel.stopListening('MessageSent');
             echo.leave(`private-${channelName}`);
         };
-    }, [echo, selectedConversation?.id]);
+    }, [echo, selectedConversation]);
 
     return (
         <ChatContext.Provider

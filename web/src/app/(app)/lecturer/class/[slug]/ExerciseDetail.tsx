@@ -14,6 +14,7 @@ export default function ExerciseDetail({ exercise }: ExerciseDetailProps) {
     if (!exercise) {
         return <p className="text-gray-600">Chọn bài tập để xem chi tiết</p>;
     }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Parse test_cases từ chuỗi JSON

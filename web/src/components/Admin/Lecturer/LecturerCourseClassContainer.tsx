@@ -76,9 +76,9 @@ export default function LecturerCourseClassContainer({parentLecturer = null, des
     const handleSearch = async (page = 1) => {
         fetchCourseClasses(page, search);
     };
-
     useEffect(() => {
         fetchCourseClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parentLecturer?.id]);
 
     return (

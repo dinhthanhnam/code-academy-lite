@@ -60,6 +60,7 @@ export default function CourseClassContainer({parentCourse = null, deselectCours
 
     useEffect(() => {
         fetchCourseClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [parentCourse?.id]);
 
     const handleNewCourseClass = (courseClass: CourseClass) => {

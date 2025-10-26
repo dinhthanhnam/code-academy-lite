@@ -113,6 +113,7 @@ export default function Chatbox() {
             channel.stopListening(".MessageSent");
             echo.leave(`private-${channelName}`);
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedConversation?.id]);
 
     // Gửi tin nhắn

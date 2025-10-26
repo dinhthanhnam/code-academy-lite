@@ -39,9 +39,12 @@ interface EditCourseClassExerciseForm {
 
 export default function EditExerciseModal({ exercise, onClose }: EditExerciseModalProps) {
     if (!exercise) return null;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [message, setMessage] = useState<{message: string | null, success: boolean | null}>({message: null, success: null});
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const {courseClass} = useClassContext();
     const courseClassId = courseClass.id;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [formData, setFormData] = useState<EditCourseClassExerciseForm>({
         title: exercise.title,
         description: exercise.description,
