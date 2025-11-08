@@ -5,12 +5,6 @@ import { useState } from "react";
 export default function ClassHeader({ courseClass }: { courseClass: any }) {
     const [copied, setCopied] = useState(false);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(courseClass.course_class_join_code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
     return (
         <div className="flex flex-row w-full border border-secondary p-4 rounded-md bg-white shadow-sm">
             {/* Phần tiêu đề và mô tả */}
@@ -29,12 +23,11 @@ export default function ClassHeader({ courseClass }: { courseClass: any }) {
                 <div className="flex items-center gap-2 w-full h-full">
                     <p className="text-sm text-gray-600 whitespace-nowrap">Mã tham gia:</p>
                     <div className="flex-grow group relative h-full">
-                        <button
-                            onClick={handleCopy}
-                            className="w-full h-full bg-gray-100 text-gray-800 font-mono text-lg px-2 rounded-md border border-secondary hover:bg-gray-200 transition-colors"
+                        <p
+                            className="w-30 h-14 bg-gray-100 text-gray-800 font-mono text-lg px-2 rounded-md border border-secondary hover:bg-gray-200 transition-colors flex items-center justify-items-center"
                         >
                             {courseClass.course_class_join_code}
-                        </button>
+                        </p>
                         <span className="tooltip">
                             {copied ? "Đã sao chép!" : "Nhấp để sao chép"}
                         </span>
