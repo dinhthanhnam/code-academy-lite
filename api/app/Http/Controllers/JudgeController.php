@@ -67,7 +67,7 @@ class JudgeController extends Controller
                 'stdin'          => $test['stdin'],
                 'expected_output'=> $test['expected_output'],
                 'cpu_time_limit' => $exercise->time_limit,
-                'memory_limit'   => $exercise->memory_limit * 1024,
+                'memory_limit'   => 2048,
             ];
 
             $response = Http::post(env('JUDGE_HOST') . '/submissions?base64_encoded=false&wait=true', $submissionData);
