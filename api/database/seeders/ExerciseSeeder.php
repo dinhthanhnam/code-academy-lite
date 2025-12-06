@@ -28,7 +28,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '0 -9', 'expected_output' => '9']
                 ]),
                 'is_free' => true,
-                'time_limit' => 1,
+                'time_limit' => 3,
                 'memory_limit' => 128,
                 'topics' => [],
                 'language' => 1,
@@ -45,7 +45,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '0 10', 'expected_output' => '0']
                 ]),
                 'is_free' => true,
-                'time_limit' => 1,
+                'time_limit' => 3,
                 'memory_limit' => 128,
                 'topics' => [],
                 'language' => 1,
@@ -62,7 +62,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '7 7', 'expected_output' => '1']
                 ]),
                 'is_free' => true,
-                'time_limit' => 1,
+                'time_limit' => 3,
                 'memory_limit' => 128,
                 'topics' => [],
                 'language' => 1,
@@ -79,7 +79,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '0', 'expected_output' => '0']
                 ]),
                 'is_free' => true,
-                'time_limit' => 1,
+                'time_limit' => 3,
                 'memory_limit' => 128,
                 'topics' => [],
                 'language' => 1,
@@ -96,7 +96,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '1000', 'expected_output' => '1']
                 ]),
                 'is_free' => true,
-                'time_limit' => 1,
+                'time_limit' => 3,
                 'memory_limit' => 128,
                 'topics' => [],
                 'language' => 1,
@@ -113,7 +113,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '0', 'expected_output' => '1']
                 ]),
                 'is_free' => true,
-                'time_limit' => 1,
+                'time_limit' => 3,
                 'memory_limit' => 128,
                 'topics' => [],
                 'language' => 1,
@@ -130,7 +130,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '7', 'expected_output' => '5040']
                 ]),
                 'is_free' => true,
-                'time_limit' => 1,
+                'time_limit' => 3,
                 'memory_limit' => 128,
                 'topics' => [],
                 'language' => 1,
@@ -147,7 +147,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => "1\n7", 'expected_output' => '7']
                 ]),
                 'is_free' => true,
-                'time_limit' => 1,
+                'time_limit' => 3,
                 'memory_limit' => 128,
                 'topics' => [3], // arrays
                 'language' => 1,
@@ -164,7 +164,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '4 4 4', 'expected_output' => '4']
                 ]),
                 'is_free' => true,
-                'time_limit' => 1,
+                'time_limit' => 3,
                 'memory_limit' => 128,
                 'topics' => [],
                 'language' => 1,
@@ -181,7 +181,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '2 3 6', 'expected_output' => '0']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [],
                 'language' => 1,
@@ -198,7 +198,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '5', 'expected_output' => '55']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [],
                 'language' => 1,
@@ -215,7 +215,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '0', 'expected_output' => '1']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [],
                 'language' => 1,
@@ -232,7 +232,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '100 10', 'expected_output' => '10']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [],
                 'language' => 1,
@@ -249,7 +249,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '12 18', 'expected_output' => '36']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [],
                 'language' => 1,
@@ -266,7 +266,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => "2\n1 2\n4", 'expected_output' => '0']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [3], // arrays
                 'language' => 1,
@@ -283,7 +283,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => "4\n-1 0 2 3", 'expected_output' => '3 2 0 -1']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [3], // arrays
                 'language' => 1,
@@ -300,7 +300,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => "6\n1 2 3 1 2 3", 'expected_output' => '1']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [3], // arrays
                 'language' => 1,
@@ -317,7 +317,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '496', 'expected_output' => '1']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [],
                 'language' => 1,
@@ -334,7 +334,7 @@ class ExerciseSeeder extends Seeder
                     ['stdin' => '5 2', 'expected_output' => '55']
                 ]),
                 'is_free' => false,
-                'time_limit' => 2,
+                'time_limit' => 3,
                 'memory_limit' => 256,
                 'topics' => [],
                 'language' => 1,
