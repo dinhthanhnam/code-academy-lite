@@ -1,11 +1,11 @@
 # Chạy cái này để build Next app thì mượt hơn
-docker compose run --rm web npm run build
+docker-compose run --rm web npm run build
 
 # Build trước
 docker compose build
 
 # Cài phụ thuộc
-docker compose run --rm php composer install
+docker-compose run --rm php composer install
 
 # Seed dữ liệu
 docker compose run --rm php php artisan migrate:fresh --seed
@@ -24,7 +24,7 @@ chmod -R 775 storage bootstrap/cache
 docker compose run --rm php php artisan cache:clear
 
 # Cài phụ thuộc
-docker compose run --rm web npm install
+docker-compose run --rm web npm install
 
 
 

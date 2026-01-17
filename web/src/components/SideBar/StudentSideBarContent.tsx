@@ -50,15 +50,15 @@ export default function StudentSideBarContent() {
                     defaultOptions={staticOptionsData1.exercise}
                     options={personalCourseClasses}
                 />
-                {/*<DropDownButton*/}
-                {/*    id="halloffame"*/}
-                {/*    title="Bảng xếp hạng"*/}
-                {/*    icon={SiHtmlacademy}*/}
-                {/*    iconSize={20}*/}
-                {/*    activePath="/hall-of-fame"*/}
-                {/*    iconStrokeWidth={0.7}*/}
-                {/*    chevron={false}*/}
-                {/*/>*/}
+                <DropDownButton
+                    id="halloffame"
+                    title="Bảng xếp hạng"
+                    icon={SiHtmlacademy}
+                    iconSize={20}
+                    activePath="/hall-of-fame"
+                    iconStrokeWidth={0.7}
+                    chevron={false}
+                />
             </SideBarSection>
 
             {/*<SideBarSection sectionName="Cá nhân">*/}

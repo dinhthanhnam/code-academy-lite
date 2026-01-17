@@ -10,9 +10,9 @@ export default function RankingBoard() {
     router.push('/hall-of-fame');
   };
   const topThree = [
-    { name: "Thành Nam", score: 252, correct: 265 }, // Top 1
-    { name: "Thế Nghĩa", score: 200, correct: 205 }, // Top 2
-    { name: "Duy Hưng", score: 169, correct: 176 }, // Top 3
+    { name: "Đức Trịnh", score: 252, correct: 265 }, // Top 1
+    { name: "Văn A", score: 200, correct: 205 }, // Top 2
+    { name: "Văn C", score: 169, correct: 176 }, // Top 3
   ];
 
   return (
